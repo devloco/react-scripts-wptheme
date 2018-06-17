@@ -1,6 +1,5 @@
 <?php
-  $TEMPLATE_PATH = get_template_directory_uri();
-  $TEMPLATE_PATH = parse_url($TEMPLATE_PATH, PHP_URL_PATH);
+  $TEMPLATE_PATH = parse_url(get_template_directory_uri(), PHP_URL_PATH);
 ?>
 <!DOCTYPE html>
 <html lang="en">

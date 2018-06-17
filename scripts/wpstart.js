@@ -83,7 +83,7 @@ function startWatch() {
                         port: "${wpThemeUserConfig.wpThemeServer.port}"
                     };
                 </script>
-                <?php $BRC_TEMPLATE_PATH = get_template_directory_uri(); $BRC_TEMPLATE_PATH = parse_url($BRC_TEMPLATE_PATH, PHP_URL_PATH); ?>
+                <?php $BRC_TEMPLATE_PATH = parse_url(get_template_directory_uri(), PHP_URL_PATH); ?>
             `;
             const jsStuff = "<script src='<?php echo $BRC_TEMPLATE_PATH; ?>/react-src/node_modules/react-scripts/wptheme-dev-utils/wpThemeClient.js'></script>";
 
