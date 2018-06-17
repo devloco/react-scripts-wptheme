@@ -9,9 +9,9 @@ const _typeBuildWarning = "warnings";
 var _server;
 var _lastStats = null;
 var _lastBuildEvent = null;
-var _sendMessage = function(buildEvent, stats) {
+var _sendMessage = (buildEvent, stats) => {
     if (_server) {
-        _server.clients.forEach(function each(ws) {
+        _server.clients.forEach((ws) => {
             if (ws.isAlive === true) {
                 let msg = JSON.stringify({
                     now: new Date().getTime().toString(),
