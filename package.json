@@ -2,13 +2,13 @@
     "name": "react-scripts",
     "version": "1.1.4",
     "description": "Configuration and scripts for Create React WP Theme.",
-    "repository": "create-react-wp/create-react-wptheme",
+    "repository": "devloco/create-react-wptheme",
     "license": "MIT",
     "engines": {
         "node": ">=6"
     },
     "bugs": {
-        "url": "https://github.com/create-react-wp/react-scripts-wptheme/issues"
+        "url": "https://github.com/devloco/react-scripts-wptheme/issues"
     },
     "files": [
         "bin",

@@ -1,6 +1,6 @@
 // @remove-on-eject-begin
 /**
- * Copyright (c) 2015-present, create-react-wp
+ * Copyright (c) 2015-present, devloco
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -125,7 +125,7 @@ function startWatch() {
         const watcher = compiler.watch(watchOptions, (err, stats) => {
             if (err) {
                 // TODO: utilize WebPackDevClient ErrorOverlay that create-react-app uses:
-                // see: https://github.com/create-react-wp/create-react-wptheme/blob/create-react-wptheme/packages/react-dev-utils/webpackHotDevClient.js
+                // see: https://github.com/devloco/create-react-wptheme/blob/create-react-wptheme/packages/react-dev-utils/webpackHotDevClient.js
                 return console.log(err);
             }
 
