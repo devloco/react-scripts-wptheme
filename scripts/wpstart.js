@@ -43,7 +43,7 @@ const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
-let _browserRefreshServer = wpThemeUserConfig && wpThemeUserConfig.browserRefreshServer.enable === true ? require("../wptheme-dev-utils/browserRefreshServer") : null;
+let _wpThemeServer = wpThemeUserConfig && wpThemeUserConfig.wpThemeServer && wpThemeUserConfig.wpThemeServer.enable === true ? require("../wptheme-dev-utils/wpThemeServer") : null;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
@@ -60,12 +60,12 @@ function startWatch() {
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild);
 
-    const injectBrowserRefreshClient = function() {
+    const injectWpThemeClient = function() {
         if (!wpThemeUserConfig) {
             return;
         }
 
-        let clientConfig = wpThemeUserConfig.injectBrowserRefreshClient;
+        let clientConfig = wpThemeUserConfig.injectWpThemeClient;
         if (!clientConfig || typeof clientConfig.mode !== "string" || clientConfig.mode === "disable") {
             return;
         }
@@ -78,14 +78,14 @@ function startWatch() {
         if (fs.existsSync(clientConfig.file)) {
             const preStuff = `
                 <script>
-                    var _wpThemeBrowserRefreshServerInfo = {
-                        enable: "${wpThemeUserConfig.browserRefreshServer.enable}",
-                        port: "${wpThemeUserConfig.browserRefreshServer.port}"
+                    var _wpThemeServerInfo = {
+                        enable: "${wpThemeUserConfig.wpThemeServer.enable}",
+                        port: "${wpThemeUserConfig.wpThemeServer.port}"
                     }
                 </script>
                 <?php $BRC_TEMPLATE_PATH = get_template_directory_uri(); $BRC_TEMPLATE_PATH = parse_url($BRC_TEMPLATE_PATH, PHP_URL_PATH); ?>
             `;
-            const jsStuff = "<script src='<?php echo $BRC_TEMPLATE_PATH; ?>/react-src/node_modules/react-scripts/wptheme-dev-utils/browserRefreshClient.js'></script>";
+            const jsStuff = "<script src='<?php echo $BRC_TEMPLATE_PATH; ?>/react-src/node_modules/react-scripts/wptheme-dev-utils/wpThemeClient.js'></script>";
 
             let fileContents = fs.readFileSync(clientConfig.file, "utf8");
             let toInject = null;
@@ -99,7 +99,7 @@ function startWatch() {
                     toInject = [preStuff, jsStuff];
                     break;
                 default:
-                    console.log(chalk.magenta(`wpstart::injectBrowserRefreshClient: unknown inject mode: ${clientConfig.mode}.`));
+                    console.log(chalk.magenta(`wpstart::injectWpThemeClient: unknown inject mode: ${clientConfig.mode}.`));
                     console.log(`Available inject modes: ${chalk.cyan("disable, endOfFile, afterToken, replaceToken")}`);
                     process.exit();
             }
@@ -112,7 +112,7 @@ function startWatch() {
 
             fs.writeFileSync(clientConfig.file, fileContents);
         } else {
-            console.log(chalk.red(`wpstart::injectBrowserRefreshClient: ${clientConfig.file} was not found.`));
+            console.log(chalk.red(`wpstart::injectWpThemeClient: ${clientConfig.file} was not found.`));
             process.exit();
         }
     };
@@ -152,27 +152,21 @@ function startWatch() {
             }
 
             if (doLaunchBrowser) {
-                if (_browserRefreshServer) {
-                    _browserRefreshServer.startServer(wpThemeUserConfig.browserRefreshServer.port);
+                if (_wpThemeServer && typeof wpThemeUserConfig.wpThemeServer.port === "number") {
+                    _wpThemeServer.startServer(wpThemeUserConfig.wpThemeServer.port);
                 }
 
                 launchBrowser();
             }
 
-            if (stats.hasErrors()) {
-                // TODO: utilize WebPackDevClient ErrorOverlay that create-react-app uses:
-                // see: https://github.com/devloco/create-react-wptheme/blob/create-react-wptheme/packages/react-dev-utils/webpackHotDevClient.js
-                if (_browserRefreshServer) {
-                    _browserRefreshServer.sendMessage("build-error", err);
-                }
-            } else {
+            if (!stats.hasErrors()) {
                 // Merge with the public folder
                 copyPublicFolder();
-                injectBrowserRefreshClient();
+                injectWpThemeClient();
                 copyToThemeFolder();
 
                 // print the post init instructions
-                if (isInteractive && wpThemePostInstallerInfo.postInstallerExists()) {
+                if (doLaunchBrowser && isInteractive && wpThemePostInstallerInfo.postInstallerExists()) {
                     clearConsole();
                     console.log("Nodejs watcher is exiting...");
                     console.log("Now go to your WP site's admin area and set the site's theme to this new theme.");
@@ -182,10 +176,10 @@ function startWatch() {
                     watcher.close();
                     process.exit();
                 }
+            }
 
-                if (!doLaunchBrowser && _browserRefreshServer) {
-                    _browserRefreshServer.sendMessage("build-success", null);
-                }
+            if (_wpThemeServer) {
+                _wpThemeServer.update(stats);
             }
 
             doLaunchBrowser = false;

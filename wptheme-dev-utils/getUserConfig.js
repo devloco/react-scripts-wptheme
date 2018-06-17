@@ -21,12 +21,12 @@ const defaultUserDevConfig = {
         ignored: "./public/index.php",
         watchFileGlobs: ["./public/**/*.js", "./public/**/*.css", "./public/**/*.php"]
     },
-    browserRefreshServer: {
+    wpThemeServer: {
         enable: true,
         port: 8090,
         watchFile: "../index.php"
     },
-    injectBrowserRefreshClient: {
+    injectWpThemeClient: {
         override: null,
         mode: "afterToken",
         token: "</body>",
