@@ -81,7 +81,7 @@ function startWatch() {
                     var _wpThemeServerInfo = {
                         enable: "${wpThemeUserConfig.wpThemeServer.enable}",
                         port: "${wpThemeUserConfig.wpThemeServer.port}"
-                    }
+                    };
                 </script>
                 <?php $BRC_TEMPLATE_PATH = get_template_directory_uri(); $BRC_TEMPLATE_PATH = parse_url($BRC_TEMPLATE_PATH, PHP_URL_PATH); ?>
             `;
