@@ -10,7 +10,7 @@
 
 const fs = require("fs-extra");
 const paths = require("../config/paths.wptheme");
-const wpThemePostInstallerInfo = require("../utils/wpThemePostInstallerInfo");
+const wpThemePostInstallerInfo = require("../wptheme-dev-utils/postInstallerInfo");
 
 module.exports = {
     copyPublicFolder: function() {

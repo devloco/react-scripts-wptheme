@@ -73,7 +73,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     console.log(`Success! Created ${originalThemeName} at ${appPath}`);
     console.log("Inside that directory, you can run several commands:");
     console.log();
-    console.log("The original create-react-scripts are still available but must be prefixed with 'cra' (e.g. crastart, craeject, etc.).");
+    console.log("The original create-react-scripts commands are still available but must be prefixed with 'cra' (e.g. crastart, craeject, etc.).");
     console.log();
     console.log(chalk.cyan(`  ${displayedCommand} ${wpStartCommandName}`));
     console.log("    Starts the development watcher.");

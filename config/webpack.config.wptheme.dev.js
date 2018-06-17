@@ -21,9 +21,9 @@ const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
 const getClientEnvironment = require("./env");
 
 const paths = require("./paths.wptheme");
-const FileWatcherPlugin = require("../utils/wpThemeFileWatcherPlugin");
-const wpThemeUserConfig = require("../utils/wpThemeGetUserConfig")("dev");
-const FileWatcherPluginConfig = wpThemeUserConfig ? wpThemeUserConfig.fileWatcherPlugin : null;
+const FileWatcherPlugin = require("../wptheme-dev-utils/fileWatcherPlugin");
+const wpThemeUserConfig = require("../wptheme-dev-utils/getUserConfig")("dev");
+const fileWatcherPluginConfig = wpThemeUserConfig ? wpThemeUserConfig.fileWatcherPlugin : null;
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -298,7 +298,7 @@ module.exports = {
         new WatchMissingNodeModulesPlugin(paths.appNodeModules),
         // For create-react-wptheme: watch addition files in the public folder for changes
         // touchFile is used to force WebPack to do a rebuild. It must be a file that WebPack is watching.
-        new FileWatcherPlugin(FileWatcherPluginConfig),
+        new FileWatcherPlugin(fileWatcherPluginConfig),
         // Moment.js is an extremely popular library that bundles large locale files
         // by default due to how Webpack interprets its code. This is a practical
         // solution that requires the user to opt into importing specific locales.

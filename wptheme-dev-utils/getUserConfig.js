@@ -12,7 +12,7 @@ const fs = require("fs-extra");
 const chalk = require("chalk");
 const path = require("path");
 const paths = require("../config/paths.wptheme");
-const wpThemePostInstallerInfo = require("../utils/wpThemePostInstallerInfo");
+const wpThemePostInstallerInfo = require("../wptheme-dev-utils/postInstallerInfo");
 const appPackageJson = require(paths.appPackageJson);
 
 const defaultUserDevConfig = {
@@ -28,7 +28,7 @@ const defaultUserDevConfig = {
     },
     injectBrowserRefreshClient: {
         override: null,
-        mode: "appendAfterToken",
+        mode: "afterToken",
         token: "</body>",
         file: "./build/index.php"
     }

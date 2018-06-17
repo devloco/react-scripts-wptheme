@@ -35,6 +35,6 @@ switch (script) {
     }
     default:
         console.log('Unknown script "' + script + '".');
-        console.log("The original create-react-scripts are still available but must be prefixed with 'cra' (e.g. crastart, craeject, etc.).");
+        console.log("The original create-react-scripts commands are still available but must be prefixed with 'cra' (e.g. crastart, craeject, etc.).");
         break;
 }
