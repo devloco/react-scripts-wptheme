@@ -92,6 +92,11 @@ function startWatch() {
 
             switch (clientConfig.mode) {
                 case "afterToken":
+                    // note in this case, we put the token back into the file (i.e. the token is something you want to keep in the file like "</body>").
+                    toInject = [clientConfig.token, preStuff, jsStuff];
+                    break;
+                case "beforeToken":
+                    // note in this case, we put the token back into the file (i.e. the token is something you want to keep in the file like "</body>").
                     toInject = [preStuff, jsStuff, clientConfig.token];
                     break;
                 case "endOfFile":
@@ -100,7 +105,7 @@ function startWatch() {
                     break;
                 default:
                     console.log(chalk.magenta(`wpstart::injectWpThemeClient: unknown inject mode: ${clientConfig.mode}.`));
-                    console.log(`Available inject modes: ${chalk.cyan("disable, endOfFile, afterToken, replaceToken")}`);
+                    console.log(`Available inject modes: ${chalk.cyan("disable, afterToken, beforeToken, replaceToken, endOfFile")}`);
                     process.exit();
             }
 
