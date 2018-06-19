@@ -70,6 +70,11 @@ function startWatch() {
             return;
         }
 
+        let serverConfig = wpThemeUserConfig.wpThemeServer;
+        if (!serverConfig || typeof serverConfig.enable !== "boolean" || clientConfig.enable === false) {
+            return;
+        }
+
         if (typeof clientConfig.override === "function") {
             clientConfig.override.call();
             return;
@@ -79,8 +84,8 @@ function startWatch() {
             const preStuff = `
                 <script>
                     var _wpThemeServerInfo = {
-                        enable: "${wpThemeUserConfig.wpThemeServer.enable}",
-                        port: "${wpThemeUserConfig.wpThemeServer.port}"
+                        enable: "${serverConfig.enable}",
+                        port: "${serverConfig.port}"
                     };
                 </script>
                 <?php $BRC_TEMPLATE_PATH = parse_url(get_template_directory_uri(), PHP_URL_PATH); ?>
