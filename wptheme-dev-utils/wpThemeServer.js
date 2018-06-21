@@ -1,35 +1,3 @@
-/*
-******
-Don't forget all BOOKMARKS about "Dev Server" are in that folder in the "WPDev01" folder on the Firefox bookmark bar.
-------
-
-    GOOD?
-    https://github.com/tadejstanic/wp-hrm-webpack
-
-
-    BOOM? (webpack 4 only):
-    https://github.com/webpack-contrib/webpack-hot-client
-    https://github.com/webpack-contrib/webpack-serve
-
-
-    Probably want to do this instead:
-    https://hackernoon.com/hot-reload-all-the-things-ec0fed8ab0
-
-    OR
-    https://blog.cloudboost.io/live-reload-hot-module-replacement-with-webpack-middleware-d0a10a86fc80
-
-    OR
-    https://github.com/webpack-contrib/webpack-hot-middleware/tree/master/example
-    https://github.com/webpack-contrib/webpack-hot-middleware
-        This is in the server.js example:
-            https://github.com/expressjs/morgan
-
-
-    OR
-    https://github.com/pa87901/hotModuleReplacementTutorial
-    https://medium.com/@Preda/setting-up-a-react-development-environment-41b0eb3d0f04
-*/
-
 "use strict";
 
 const WebSocket = require("ws");
