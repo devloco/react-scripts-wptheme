@@ -1,6 +1,6 @@
 {
     "name": "@devloco/react-scripts-wptheme",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Configuration and scripts for Create React WP Theme.",
     "repository": "devloco/create-react-wptheme",
     "license": "MIT",
