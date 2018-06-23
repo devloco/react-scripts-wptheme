@@ -43,6 +43,7 @@ const wpThemePostInstallerInfo = require("@devloco/create-react-wptheme-utils/po
 const wpThemeCopyFunctions = require("@devloco/create-react-wptheme-utils/copyFunctions");
 const copyPublicFolder = wpThemeCopyFunctions.copyPublicFolder;
 const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
+const cleanThemeFolder = wpThemeCopyFunctions.cleanThemeFolder;
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
@@ -60,6 +61,8 @@ measureFileSizesBeforeBuild(paths.appBuild)
         // Remove all content but keep the directory so that
         // if you're in it, you don't end up in Trash
         fs.emptyDirSync(paths.appBuild);
+        // clean the WP theme folder
+        cleanThemeFolder();
         // Merge with the public folder
         copyPublicFolder(paths);
         // Start the webpack build
@@ -106,7 +109,7 @@ function build(previousFileSizes) {
     console.log();
 
     // print the post init instructions
-    if (wpThemePostInstallerInfo.postInstallerExists()) {
+    if (wpThemePostInstallerInfo.postInstallerExists(paths)) {
         const displayedCommand = useYarn ? "yarn" : "npm";
         clearConsole();
         console.error(chalk.red("wpbuild is exiting..."));
@@ -123,6 +126,7 @@ function build(previousFileSizes) {
             if (err) {
                 return reject(err);
             }
+
             const messages = formatWebpackMessages(stats.toJson({}, true));
             if (messages.errors.length) {
                 // Only keep the first error. Others are often indicative
@@ -132,6 +136,7 @@ function build(previousFileSizes) {
                 }
                 return reject(new Error(messages.errors.join("\n\n")));
             }
+
             if (process.env.CI && (typeof process.env.CI !== "string" || process.env.CI.toLowerCase() !== "false") && messages.warnings.length) {
                 console.log();
                 console.log(chalk.yellow("Treating warnings as errors because process.env.CI = true."));
