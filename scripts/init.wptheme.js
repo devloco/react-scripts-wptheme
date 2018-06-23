@@ -36,8 +36,8 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     });
 
     // Setup the wptheme script rules
-    const wpStartCommandName = "wpstart";
-    const commandNames = ["wpbuild", wpStartCommandName];
+    const startCommandName = "start";
+    const commandNames = ["build", startCommandName, "wpbuild", "wpstart"];
     commandNames.forEach((commandName) => {
         appPackageJson.scripts[`${commandName}`] = `wptheme-scripts ${commandName}`;
     });
@@ -75,7 +75,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     console.log();
     console.log("The original create-react-scripts commands are still available but must be prefixed with 'cra' (e.g. crastart, craeject, etc.).");
     console.log();
-    console.log(chalk.cyan(`  ${displayedCommand} ${wpStartCommandName}`));
+    console.log(chalk.cyan(`  ${displayedCommand} ${startCommandName}`));
     console.log("    Starts the development watcher.");
     console.log();
     console.log(chalk.cyan(`  ${displayedCommand} ${useYarn ? "" : "run "}wpbuild`));
@@ -88,7 +88,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     console.log("We suggest that you begin by typing:");
     console.log();
     console.log(chalk.cyan("  cd"), cdpath);
-    console.log(`  ${chalk.cyan(`${displayedCommand} ${wpStartCommandName}`)}`);
+    console.log(`  ${chalk.cyan(`${displayedCommand} ${startCommandName}`)}`);
     if (readmeExists) {
         console.log();
         console.log(chalk.yellow("You had a `README.md` file, we renamed it to `README.old.md`"));

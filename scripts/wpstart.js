@@ -34,16 +34,17 @@ const paths = require("../config/paths.wptheme");
 const config = require("../config/webpack.config.wptheme.dev");
 const appPackageJson = require(paths.appPackageJson);
 
-const wpThemeUserConfig = require("../wptheme-dev-utils/getUserConfig")(process.env.NODE_ENV);
-const wpThemePostInstallerInfo = require("../wptheme-dev-utils/postInstallerInfo");
-const wpThemeCopyFunctions = require("../wptheme-dev-utils/copyFunctions");
+const wpThemeUserConfig = require("@devloco/create-react-wptheme-utils/getUserConfig")(paths, process.env.NODE_ENV);
+const wpThemePostInstallerInfo = require("@devloco/create-react-wptheme-utils/postInstallerInfo");
+const wpThemeCopyFunctions = require("@devloco/create-react-wptheme-utils/copyFunctions");
 const copyPublicFolder = wpThemeCopyFunctions.copyPublicFolder;
 const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
-let _wpThemeServer = wpThemeUserConfig && wpThemeUserConfig.wpThemeServer && wpThemeUserConfig.wpThemeServer.enable === true ? require("../wptheme-dev-utils/wpThemeServer") : null;
+let _wpThemeServer =
+    wpThemeUserConfig && wpThemeUserConfig.wpThemeServer && wpThemeUserConfig.wpThemeServer.enable === true ? require("@devloco/create-react-wptheme-utils/wpThemeServer") : null;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
@@ -60,7 +61,7 @@ function startWatch() {
     // if you're in it, you don't end up in Trash
     fs.emptyDirSync(paths.appBuild);
 
-    const injectWpThemeClient = function() {
+    const injectWpThemeClient = function(wpThemeServer) {
         if (!wpThemeUserConfig) {
             return;
         }
@@ -70,54 +71,20 @@ function startWatch() {
             return;
         }
 
-        let serverConfig = wpThemeUserConfig.wpThemeServer;
-        if (!serverConfig || typeof serverConfig.enable !== "boolean" || clientConfig.enable === false) {
-            return;
-        }
-
         if (typeof clientConfig.override === "function") {
             clientConfig.override.call();
             return;
         }
 
+        let toInject = wpThemeServer.getClientInjectString(clientConfig.mode, clientConfig.token);
+
         if (fs.existsSync(clientConfig.file)) {
-            const preStuff = `
-                <script>
-                    var _wpThemeServerInfo = {
-                        enable: "${serverConfig.enable}",
-                        port: "${serverConfig.port}"
-                    };
-                </script>
-                <?php $BRC_TEMPLATE_PATH = parse_url(get_template_directory_uri(), PHP_URL_PATH); ?>
-            `;
-            const jsStuff = "<script src='<?php echo $BRC_TEMPLATE_PATH; ?>/react-src/node_modules/react-scripts/wptheme-dev-utils/wpThemeClient.js'></script>";
-
             let fileContents = fs.readFileSync(clientConfig.file, "utf8");
-            let toInject = null;
-
-            switch (clientConfig.mode) {
-                case "afterToken":
-                    // note in this case, we put the token back into the file (i.e. the token is something you want to keep in the file like "</body>").
-                    toInject = [clientConfig.token, preStuff, jsStuff];
-                    break;
-                case "beforeToken":
-                    // note in this case, we put the token back into the file (i.e. the token is something you want to keep in the file like "</body>").
-                    toInject = [preStuff, jsStuff, clientConfig.token];
-                    break;
-                case "endOfFile":
-                case "replaceToken":
-                    toInject = [preStuff, jsStuff];
-                    break;
-                default:
-                    console.log(chalk.magenta(`wpstart::injectWpThemeClient: unknown inject mode: ${clientConfig.mode}.`));
-                    console.log(`Available inject modes: ${chalk.cyan("disable, afterToken, beforeToken, replaceToken, endOfFile")}`);
-                    process.exit();
-            }
 
             if (clientConfig.mode === "endOfFile") {
-                fileContents += toInject.join("\n");
+                fileContents += toInject;
             } else {
-                fileContents = fileContents.replace(clientConfig.token, toInject.join("\n"));
+                fileContents = fileContents.replace(clientConfig.token, toInject);
             }
 
             fs.writeFileSync(clientConfig.file, fileContents);
@@ -161,22 +128,18 @@ function startWatch() {
                 console.log();
             }
 
-            if (doLaunchBrowser) {
-                if (_wpThemeServer && typeof wpThemeUserConfig.wpThemeServer.port === "number") {
-                    _wpThemeServer.startServer(wpThemeUserConfig.wpThemeServer.port);
-                }
-
-                launchBrowser();
+            if (doLaunchBrowser && _wpThemeServer) {
+                _wpThemeServer.startServer(paths);
             }
 
             if (!stats.hasErrors()) {
                 // Merge with the public folder
-                copyPublicFolder();
-                injectWpThemeClient();
-                copyToThemeFolder();
+                copyPublicFolder(paths);
+                injectWpThemeClient(_wpThemeServer);
+                copyToThemeFolder(paths);
 
                 // print the post init instructions
-                if (doLaunchBrowser && isInteractive && wpThemePostInstallerInfo.postInstallerExists()) {
+                if (doLaunchBrowser && isInteractive && wpThemePostInstallerInfo.postInstallerExists(paths)) {
                     clearConsole();
                     console.log("Nodejs watcher is exiting...");
                     console.log("Now go to your WP site's admin area and set the site's theme to this new theme.");
@@ -190,6 +153,10 @@ function startWatch() {
 
             if (_wpThemeServer) {
                 _wpThemeServer.update(stats);
+            }
+
+            if (doLaunchBrowser) {
+                launchBrowser();
             }
 
             doLaunchBrowser = false;

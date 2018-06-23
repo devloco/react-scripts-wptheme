@@ -21,8 +21,8 @@ const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
 const getClientEnvironment = require("./env");
 
 const paths = require("./paths.wptheme");
-const FileWatcherPlugin = require("../wptheme-dev-utils/fileWatcherPlugin");
-const wpThemeUserConfig = require("../wptheme-dev-utils/getUserConfig")("dev");
+const FileWatcherPlugin = require("@devloco/create-react-wptheme-utils/fileWatcherPlugin");
+const wpThemeUserConfig = require("@devloco/create-react-wptheme-utils/getUserConfig")(paths, process.env.NODE_ENV);
 const fileWatcherPluginConfig = wpThemeUserConfig ? wpThemeUserConfig.fileWatcherPlugin : null;
 
 // Webpack uses `publicPath` to determine where the app is being served from.

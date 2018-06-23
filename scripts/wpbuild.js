@@ -39,8 +39,8 @@ const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
-const wpThemePostInstallerInfo = require("../wptheme-dev-utils/postInstallerInfo");
-const wpThemeCopyFunctions = require("../wptheme-dev-utils/copyFunctions");
+const wpThemePostInstallerInfo = require("@devloco/create-react-wptheme-utils/postInstallerInfo");
+const wpThemeCopyFunctions = require("@devloco/create-react-wptheme-utils/copyFunctions");
 const copyPublicFolder = wpThemeCopyFunctions.copyPublicFolder;
 const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
 
@@ -61,7 +61,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
         // if you're in it, you don't end up in Trash
         fs.emptyDirSync(paths.appBuild);
         // Merge with the public folder
-        copyPublicFolder();
+        copyPublicFolder(paths);
         // Start the webpack build
         return build(previousFileSizes);
     })
@@ -140,7 +140,7 @@ function build(previousFileSizes) {
                 return reject(new Error(messages.warnings.join("\n\n")));
             }
 
-            copyToThemeFolder();
+            copyToThemeFolder(paths);
 
             return resolve({
                 stats,

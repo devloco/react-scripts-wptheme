@@ -11,9 +11,13 @@
 const spawn = require("react-dev-utils/crossSpawn");
 const args = process.argv.slice(2);
 
-const scriptIndex = args.findIndex((x) => x === "wpbuild" || x === "wpstart");
-const script = scriptIndex === -1 ? args[0] : args[scriptIndex];
+const scriptIndex = args.findIndex((x) => x === "build" || x === "start" || x === "wpbuild" || x === "wpstart");
 const nodeArgs = scriptIndex > 0 ? args.slice(0, scriptIndex) : [];
+
+let script = scriptIndex === -1 ? args[0] : args[scriptIndex];
+if (!script.startsWith("wp")) {
+    script = `wp${script}`;
+}
 
 switch (script) {
     case "wpbuild":
