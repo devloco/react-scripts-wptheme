@@ -1,1 +1,4 @@
 /fixtures
+/.git
+/.gitignore
+.gitattributes
