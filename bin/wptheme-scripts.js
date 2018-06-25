@@ -22,11 +22,7 @@ if (!script.startsWith("wp")) {
 switch (script) {
     case "wpbuild":
     case "wpstart": {
-        const result = spawn.sync("node", nodeArgs.concat(require.resolve("../scripts/" + script)).concat(args.slice(scriptIndex + 1)), { stdio: "inherit" }).on("error", function(err) {
-            console.log("wpstart error: ", err);
-            console.log("wpstart error args: ", args);
-            throw err;
-        });
+        const result = spawn.sync("node", nodeArgs.concat(require.resolve("../scripts/" + script)).concat(args.slice(scriptIndex + 1)), { stdio: "inherit" });
         if (result.signal) {
             if (result.signal === "SIGKILL") {
                 console.log("The build failed because the process exited too early.");
