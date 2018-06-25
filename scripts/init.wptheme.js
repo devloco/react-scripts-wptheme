@@ -17,6 +17,7 @@ process.on("unhandledRejection", (err) => {
 const fs = require("fs-extra");
 const path = require("path");
 const chalk = require("chalk");
+const shelljs = require("@devloco/react-scripts-wptheme-utils/shelljs");
 
 module.exports = function(appPath, appName, verbose, originalDirectory, template, readmeExists) {
     const appPackageJson = require(path.join(appPath, "package.json"));
@@ -27,7 +28,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     let originalThemeName = aOriginalDirectory[aOriginalDirectory.length - 1];
 
     // Prefix the original create-react-app script rules with "cra"
-    // so that wptheme users don't accidentally use them from muscle memory
+    // so that wptheme can take over the start and build commands.
     const craCommandNames = ["build", "eject", "start", "test"];
     craCommandNames.forEach((commandName) => {
         let scriptRule = appPackageJson.scripts[commandName];
@@ -36,8 +37,9 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     });
 
     // Setup the wptheme script rules
+    const buildCommandName = "build";
     const startCommandName = "start";
-    const commandNames = ["build", startCommandName, "wpbuild", "wpstart"];
+    const commandNames = [buildCommandName, startCommandName, "wpbuild", "wpstart"];
     commandNames.forEach((commandName) => {
         appPackageJson.scripts[`${commandName}`] = `wptheme-scripts ${commandName}`;
     });
@@ -53,6 +55,29 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     let fileContents = fs.readFileSync(styleCssFile, "utf8");
     let result = fileContents.replace(/REPLACE_WITH_THEME_NAME/g, originalThemeName);
     fs.writeFileSync(styleCssFile, result, "utf8", "w");
+
+    // if we're not on Windows, then try to chmod the folder so that the PHP portion of
+    // the setup can complete (the webserver needs write access to package.json)
+    if (process.platform !== "win32") {
+        function setReadWrite(file) {
+            try {
+                shelljs.chmod("go+w", file);
+            } catch (error) {
+                console.log();
+                console.log();
+                console.log(chalk.magenta("OS ERROR changing file permissions on:\n"));
+                console.log("    " + file);
+                console.log("The OS error is:", error);
+                console.log();
+                console.log(`${chalk.yellow("The PHP portion of setup might fail.")} Your webserver needs write access to this file to complete the setup.`);
+            }
+        }
+
+        let files = [path.join(appPath, "package.json"), path.join(appPath, "/public/index.php"), path.join(appPath, "/public/post_installer.php")];
+        files.forEach((file) => {
+            setReadWrite(file);
+        });
+    }
 
     // Display the most elegant way to cd.
     // This needs to handle an undefined originalDirectory for
@@ -78,21 +103,19 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     console.log(chalk.cyan(`  ${displayedCommand} ${startCommandName}`));
     console.log("    Starts the development watcher.");
     console.log();
-    console.log(chalk.cyan(`  ${displayedCommand} ${useYarn ? "" : "run "}wpbuild`));
+    console.log(chalk.cyan(`  ${displayedCommand} ${useYarn ? "" : "run"} ${buildCommandName}`));
     console.log("    Bundles the theme files for production.");
-    // console.log();
-    // console.log(chalk.cyan(`  ${displayedCommand} ${useYarn ? "" : "run "}eject`));
-    // console.log("    Removes this tool and copies build dependencies, configuration files");
-    // console.log("    and scripts into the app directory. If you do this, you can’t go back!");
     console.log();
     console.log("We suggest that you begin by typing:");
     console.log();
     console.log(chalk.cyan("  cd"), cdpath);
     console.log(`  ${chalk.cyan(`${displayedCommand} ${startCommandName}`)}`);
+
     if (readmeExists) {
         console.log();
         console.log(chalk.yellow("You had a `README.md` file, we renamed it to `README.old.md`"));
     }
+
     console.log();
     console.log("Happy hacking!");
 };
