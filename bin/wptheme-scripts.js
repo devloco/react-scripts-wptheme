@@ -18,7 +18,6 @@ let script = scriptIndex === -1 ? args[0] : args[scriptIndex];
 if (!script.startsWith("wp")) {
     script = `wp${script}`;
 }
-
 switch (script) {
     case "wpbuild":
     case "wpstart": {
@@ -31,6 +30,7 @@ switch (script) {
                 console.log("The build failed because the process exited too early.");
                 console.log("Someone might have called `kill` or `killall`, or the system could be shutting down.");
             }
+
             process.exit(1);
         }
 
