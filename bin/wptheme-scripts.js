@@ -18,6 +18,7 @@ let script = scriptIndex === -1 ? args[0] : args[scriptIndex];
 if (!script.startsWith("wp")) {
     script = `wp${script}`;
 }
+
 switch (script) {
     case "wpbuild":
     case "wpstart": {
