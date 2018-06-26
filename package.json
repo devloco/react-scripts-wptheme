@@ -3,7 +3,23 @@
     "version": "1.0.0",
     "description": "Configuration and scripts for Create React WP Theme.",
     "repository": "devloco/create-react-wptheme",
+    "author": "devloco",
     "license": "MIT",
+    "keywords": [
+        "wordpress",
+        "create-react-app",
+        "wordpress-theme",
+        "wordpress-development",
+        "wordpress-starter-theme",
+        "wordpress-api",
+        "reactjs",
+        "react",
+        "react-theme",
+        "wordpress-server",
+        "react-tutorial",
+        "react-wordpress-themes",
+        "php"
+    ],
     "engines": {
         "node": ">=6"
     },
