@@ -120,11 +120,12 @@ function startWatch() {
             }
 
             if (isInteractive) {
+                let buildCommand = useYarn ? "yarn build" : "npm run build";
                 clearConsole();
                 console.log(stats.toString(webpackOutputFormat));
                 console.log();
                 console.log("Note that the development build is not optimized.");
-                console.log(`To create a production build, use ${chalk.cyan("yarn wpbuild")}.`);
+                console.log(`To create a production build, use ${chalk.cyan(buildCommand)}.`);
                 console.log();
             }
 
@@ -143,7 +144,7 @@ function startWatch() {
                     clearConsole();
                     console.log("Nodejs watcher is exiting...");
                     console.log("Now go to your WP site's admin area and set the site's theme to this new theme.");
-                    console.log(chalk.cyan("Then load your browser once to complete the PHP portion of the setup."));
+                    console.log(`Then click "${chalk.cyan("View Site")}" to complete the PHP portion of the setup.`);
                     console.log(chalk.green("Once that is done, restart the Nodejs watcher."));
 
                     watcher.close();

@@ -61,7 +61,8 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     if (process.platform !== "win32") {
         function setReadWrite(file) {
             try {
-                shelljs.chmod("go+w", file);
+                console.log(`${chalk.green("Attempting perm change (chmod) on:")}\n    ${file}`);
+                shelljs.chmod("-R", "go+w", file);
             } catch (error) {
                 console.log();
                 console.log();
@@ -73,7 +74,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
             }
         }
 
-        let files = [path.join(appPath, "package.json"), path.join(appPath, "/public/index.php"), path.join(appPath, "/public/post_installer.php")];
+        let files = [path.resolve(originalDirectory, reactSrcName)];
         files.forEach((file) => {
             setReadWrite(file);
         });
@@ -92,7 +93,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     }
 
     // Change displayed command to yarn instead of yarnpkg
-    const displayedCommand = useYarn ? "yarn" : "npm";
+    const displayedCommand = useYarn ? "yarn" : "npm run";
 
     console.log();
     console.log(`Success! Created ${originalThemeName} at ${appPath}`);
@@ -103,7 +104,7 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
     console.log(chalk.cyan(`  ${displayedCommand} ${startCommandName}`));
     console.log("    Starts the development watcher.");
     console.log();
-    console.log(chalk.cyan(`  ${displayedCommand} ${useYarn ? "" : "run"} ${buildCommandName}`));
+    console.log(chalk.cyan(`  ${displayedCommand} ${buildCommandName}`));
     console.log("    Bundles the theme files for production.");
     console.log();
     console.log("We suggest that you begin by typing:");
