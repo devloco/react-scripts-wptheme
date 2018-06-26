@@ -34,9 +34,9 @@ const paths = require("../config/paths.wptheme");
 const config = require("../config/webpack.config.wptheme.dev");
 const appPackageJson = require(paths.appPackageJson);
 
-const wpThemeUserConfig = require("@devloco/create-react-wptheme-utils/getUserConfig")(paths, process.env.NODE_ENV);
-const wpThemePostInstallerInfo = require("@devloco/create-react-wptheme-utils/postInstallerInfo");
-const wpThemeCopyFunctions = require("@devloco/create-react-wptheme-utils/copyFunctions");
+const wpThemeUserConfig = require("@devloco/react-scripts-wptheme-utils/getUserConfig")(paths, process.env.NODE_ENV);
+const wpThemePostInstallerInfo = require("@devloco/react-scripts-wptheme-utils/postInstallerInfo");
+const wpThemeCopyFunctions = require("@devloco/react-scripts-wptheme-utils/copyFunctions");
 const copyPublicFolder = wpThemeCopyFunctions.copyPublicFolder;
 const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
 
@@ -44,7 +44,7 @@ const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
 let _wpThemeServer =
-    wpThemeUserConfig && wpThemeUserConfig.wpThemeServer && wpThemeUserConfig.wpThemeServer.enable === true ? require("@devloco/create-react-wptheme-utils/wpThemeServer") : null;
+    wpThemeUserConfig && wpThemeUserConfig.wpThemeServer && wpThemeUserConfig.wpThemeServer.enable === true ? require("@devloco/react-scripts-wptheme-utils/wpThemeServer") : null;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {

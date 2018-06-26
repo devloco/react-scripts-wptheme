@@ -39,8 +39,8 @@ const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
-const wpThemePostInstallerInfo = require("@devloco/create-react-wptheme-utils/postInstallerInfo");
-const wpThemeCopyFunctions = require("@devloco/create-react-wptheme-utils/copyFunctions");
+const wpThemePostInstallerInfo = require("@devloco/react-scripts-wptheme-utils/postInstallerInfo");
+const wpThemeCopyFunctions = require("@devloco/react-scripts-wptheme-utils/copyFunctions");
 const copyPublicFolder = wpThemeCopyFunctions.copyPublicFolder;
 const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
 const cleanThemeFolder = wpThemeCopyFunctions.cleanThemeFolder;

@@ -17,7 +17,7 @@ process.on("unhandledRejection", (err) => {
 const fs = require("fs-extra");
 const path = require("path");
 const chalk = require("chalk");
-const shelljs = require("@devloco/react-scripts-wptheme-utils/shelljs");
+const shelljs = require("@devloco/react-scripts-wptheme-utils/shell-js");
 
 module.exports = function(appPath, appName, verbose, originalDirectory, template, readmeExists) {
     const appPackageJson = require(path.join(appPath, "package.json"));

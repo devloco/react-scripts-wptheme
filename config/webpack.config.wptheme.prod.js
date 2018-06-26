@@ -21,7 +21,7 @@ const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
 const paths = require("./paths.wptheme");
 const getClientEnvironment = require("./env");
 
-const wpThemeUserConfig = require("@devloco/create-react-wptheme-utils/getUserConfig")(paths, process.env.NODE_ENV);
+const wpThemeUserConfig = require("@devloco/react-scripts-wptheme-utils/getUserConfig")(paths, process.env.NODE_ENV);
 let userHomepageSetting;
 if (wpThemeUserConfig && typeof wpThemeUserConfig.homepage === "string") {
     if (wpThemeUserConfig.ensureTrailingSlash) {
