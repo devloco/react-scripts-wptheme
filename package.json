@@ -76,7 +76,7 @@
         "webpack-dev-server": "2.9.4",
         "webpack-manifest-plugin": "1.3.2",
         "whatwg-fetch": "2.0.3",
-        "@devloco/react-scripts-wptheme-utils": "^1.0.1"
+        "@devloco/react-scripts-wptheme-utils": "^1.0.2"
     },
     "devDependencies": {
         "react": "^16.0.0",
