@@ -40,10 +40,10 @@ const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
 const wpThemePostInstallerInfo = require("@devloco/react-scripts-wptheme-utils/postInstallerInfo");
-const wpThemeCopyFunctions = require("@devloco/react-scripts-wptheme-utils/copyFunctions");
-const copyPublicFolder = wpThemeCopyFunctions.copyPublicFolder;
-const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
-const cleanThemeFolder = wpThemeCopyFunctions.cleanThemeFolder;
+const wpThemeFileFunctions = require("@devloco/react-scripts-wptheme-utils/fileFunctions");
+const copyPublicFolder = wpThemeFileFunctions.copyPublicFolder;
+const copyToThemeFolder = wpThemeFileFunctions.copyToThemeFolder;
+const cleanThemeFolder = wpThemeFileFunctions.cleanThemeFolder;
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;

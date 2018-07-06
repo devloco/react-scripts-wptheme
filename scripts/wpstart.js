@@ -1,6 +1,6 @@
 // @remove-on-eject-begin
 /**
- * Copyright (c) 2015-present, devloco
+ * Copyright (c) 2018-present, https://github.com/devloco
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -36,9 +36,9 @@ const appPackageJson = require(paths.appPackageJson);
 
 const wpThemeUserConfig = require("@devloco/react-scripts-wptheme-utils/getUserConfig")(paths, process.env.NODE_ENV);
 const wpThemePostInstallerInfo = require("@devloco/react-scripts-wptheme-utils/postInstallerInfo");
-const wpThemeCopyFunctions = require("@devloco/react-scripts-wptheme-utils/copyFunctions");
-const copyPublicFolder = wpThemeCopyFunctions.copyPublicFolder;
-const copyToThemeFolder = wpThemeCopyFunctions.copyToThemeFolder;
+const wpThemeFileFunctions = require("@devloco/react-scripts-wptheme-utils/fileFunctions");
+const copyPublicFolder = wpThemeFileFunctions.copyPublicFolder;
+const copyToThemeFolder = wpThemeFileFunctions.copyToThemeFolder;
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
