@@ -12,7 +12,7 @@
         homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <link rel="manifest" href="<?php echo $TEMPLATE_PATH; ?>/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%>/favicon.ico?" type="image/x-icon">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico?" type="image/x-icon">
     <!--
         If you're reading this from "view source" in your browser, it might not make sense as
         these tokens have already been evaluated and replaced, even in this remark blurb.
