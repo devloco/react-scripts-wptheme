@@ -28,8 +28,6 @@ const webpack = require("webpack");
 const clearConsole = require("react-dev-utils/clearConsole");
 const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
 const openBrowser = require("react-dev-utils/openBrowser");
-// const spawn = require("react-dev-utils/crossSpawn");
-// const path = require("path");
 const paths = require("../config/paths.wptheme");
 const config = require("../config/webpack.config.wptheme.dev");
 const appPackageJson = require(paths.appPackageJson);
@@ -39,6 +37,7 @@ const wpThemePostInstallerInfo = require("@devloco/react-scripts-wptheme-utils/p
 const wpThemeFileFunctions = require("@devloco/react-scripts-wptheme-utils/fileFunctions");
 const copyPublicFolder = wpThemeFileFunctions.copyPublicFolder;
 const copyToThemeFolder = wpThemeFileFunctions.copyToThemeFolder;
+const writeDoNotEditFile = wpThemeFileFunctions.writeDoNotEditFile;
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
@@ -137,6 +136,7 @@ function startWatch() {
                 copyPublicFolder(paths);
                 injectWpThemeClient(_wpThemeServer);
                 copyToThemeFolder(paths);
+                writeDoNotEditFile();
 
                 // print the post init instructions
                 if (doLaunchBrowser && isInteractive && wpThemePostInstallerInfo.postInstallerExists(paths)) {
