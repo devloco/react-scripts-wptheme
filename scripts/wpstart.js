@@ -43,8 +43,7 @@ const copyToThemeFolder = wpThemeFileFunctions.copyToThemeFolder;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
-let _wpThemeServer =
-    wpThemeUserConfig && wpThemeUserConfig.wpThemeServer && wpThemeUserConfig.wpThemeServer.enable === true ? require("@devloco/react-scripts-wptheme-utils/wpThemeServer") : null;
+let _wpThemeServer = wpThemeUserConfig && wpThemeUserConfig.wpThemeServer && wpThemeUserConfig.wpThemeServer.enable === true ? require("@devloco/react-scripts-wptheme-utils/wpThemeServer") : null;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
